@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/audio-app/static/js/main.c92ac73b.chunk.js",
-    "main.js.map": "/audio-app/static/js/main.c92ac73b.chunk.js.map",
+    "main.js": "/audio-app/static/js/main.9765a1ba.chunk.js",
+    "main.js.map": "/audio-app/static/js/main.9765a1ba.chunk.js.map",
     "runtime-main.js": "/audio-app/static/js/runtime-main.d3566d26.js",
     "runtime-main.js.map": "/audio-app/static/js/runtime-main.d3566d26.js.map",
     "static/js/2.bf6998c9.chunk.js": "/audio-app/static/js/2.bf6998c9.chunk.js",
     "static/js/2.bf6998c9.chunk.js.map": "/audio-app/static/js/2.bf6998c9.chunk.js.map",
     "index.html": "/audio-app/index.html",
-    "precache-manifest.452234e9d7fb6828ae85554f32a3210e.js": "/audio-app/precache-manifest.452234e9d7fb6828ae85554f32a3210e.js",
+    "precache-manifest.7429f3599b5fb84090d54184f1a3d918.js": "/audio-app/precache-manifest.7429f3599b5fb84090d54184f1a3d918.js",
     "service-worker.js": "/audio-app/service-worker.js",
     "static/js/2.bf6998c9.chunk.js.LICENSE.txt": "/audio-app/static/js/2.bf6998c9.chunk.js.LICENSE.txt",
     "static/media/sample-audio.wav": "/audio-app/static/media/sample-audio.eb171bfb.wav"
@@ -15,6 +15,6 @@
   "entrypoints": [
     "static/js/runtime-main.d3566d26.js",
     "static/js/2.bf6998c9.chunk.js",
-    "static/js/main.c92ac73b.chunk.js"
+    "static/js/main.9765a1ba.chunk.js"
   ]
 }
