@@ -3,7 +3,6 @@ export function inBetween({ selected, min, max }) {
 }
 
 export function compareWord(wordOne, wordTwo) {
-  const regex = /[.,\s]/g;
 
   if (!wordOne || !wordTwo) {
     return false;
