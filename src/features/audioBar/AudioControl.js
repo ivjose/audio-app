@@ -69,7 +69,7 @@ const Styled = {
     font-size: 9px;
     font-style: normal;
     text-align: center;
-    padding: 5px 6px;
+    padding: 6px 5px;
     &:hover {
       background: url(${fastForwardHover}) no-repeat center center;
       cursor: pointer;
