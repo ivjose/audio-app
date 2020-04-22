@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 
@@ -11,15 +11,15 @@ import {
   setStop,
   setPlay,
   setPause,
-  setEnd,
+  setSpeed,
   updateCurrentTime,
   getAudioData,
   getDuration,
   updateSearchWord,
 } from "./audioBarSlice";
-import AudioControl from "./components/AudioControl";
-import AudioLine from "./components/AudioLine";
-import AudioConversation from "./components/AudioConversation";
+import AudioControl from "./AudioControl";
+import AudioLine from "./AudioLine";
+import AudioConversation from "./AudioConversation";
 
 const Styled = {
   Wrapper: styled.section`
@@ -35,13 +35,12 @@ const AudioBar = (props) => {
   const [searchWord, setSearchWord] = useState("");
 
   const dispatch = useDispatch();
-  const { status, duration, currentTime, filterWord } = useSelector(
+  const { status, duration, currentTime, filterWord, speed } = useSelector(
     (state) => state.audioBar
   );
   const { wordTimings, userOne, userTwo } = useSelector(
     (state) => state.audioBar.data
   );
-
   const debouncedSearchWord = useDebounce(searchWord, 500);
 
   useEffect(() => {
@@ -59,7 +58,6 @@ const AudioBar = (props) => {
   useEffect(() => {
     const handleUpdateTime = () => {
       const updatedTime = parseFloat(audio.currentTime.toFixed(2));
-      console.info(audio.currentTime, audio.duration, "XXXXXXXXXxDDDDDD");
 
       if (audio.currentTime === audio.duration) {
         dispatch(setStop());
@@ -71,25 +69,15 @@ const AudioBar = (props) => {
 
     audio.addEventListener("timeupdate", handleUpdateTime);
     return () => {
-      // console.log(
-      //   user.reduce(
-      //     (a, b) => a + (parseFloat(b.endTime) - parseFloat(b.startTime)),
-      //     0
-      //   ),
-      //   "11DDDDDDDDDDDDDDDDDDDDDd"
-      // );
       audio.removeEventListener("timeupdate", handleUpdateTime);
     };
   }, [audio, dispatch]);
 
-  useEffect(
-    () => {
-      if (debouncedSearchWord) {
-        dispatch(updateSearchWord(debouncedSearchWord));
-      }
-    },
-    [debouncedSearchWord, dispatch] // Only call effect if debounced search term changes
-  );
+  useEffect(() => {
+    if (debouncedSearchWord) {
+      dispatch(updateSearchWord(debouncedSearchWord));
+    }
+  }, [debouncedSearchWord, dispatch]);
 
   const handlePlay = useCallback(() => {
     audio.play();
@@ -110,6 +98,15 @@ const AudioBar = (props) => {
     [audio, dispatch]
   );
 
+  const handleSelectWord = useCallback(
+    (time) => {
+      audio.currentTime = parseFloat(time);
+      audio.pause();
+      dispatch(setPause());
+    },
+    [audio, dispatch]
+  );
+
   const handleSearchWord = (event) => {
     let selected = event.target.value;
 
@@ -120,6 +117,14 @@ const AudioBar = (props) => {
     }
   };
 
+  const handleSpeed = useCallback(
+    (selectedSpeed) => {
+      audio.playbackRate = selectedSpeed;
+      dispatch(setSpeed(selectedSpeed));
+    },
+    [audio, dispatch]
+  );
+
   const handleClearSearch = () => {
     dispatch(updateSearchWord(""));
     setSearchWord("");
@@ -129,8 +134,12 @@ const AudioBar = (props) => {
     <Styled.Wrapper>
       <AudioControl
         status={status}
+        currentTime={currentTime}
+        speed={speed}
+        skip={handleSkip}
         handlePlay={handlePlay}
         handlePause={handlePause}
+        handleSpeed={handleSpeed}
       />
       <AudioLine
         duration={duration}
@@ -145,7 +154,7 @@ const AudioBar = (props) => {
         currentTime={currentTime}
         filterWord={filterWord}
         searchWord={searchWord}
-        skip={handleSkip}
+        handleSelectWord={handleSelectWord}
         handleSearchWord={handleSearchWord}
         handleClearSearch={handleClearSearch}
       />

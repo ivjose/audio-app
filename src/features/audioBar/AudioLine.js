@@ -1,10 +1,17 @@
 import React, { useCallback, useMemo } from "react";
-import { useSelector } from "react-redux";
 import styled from "@emotion/styled";
+
+import { percentage, secondsToMinutes } from "./helpers";
 
 const Styled = {
   Wrapper: styled.section`
-    height: 105px;
+    background: ${(props) => props.theme.colors.dimeWhite};
+    padding: 1em;
+    border-bottom: 1px solid ${(props) => props.theme.colors.lighterGray};
+    /* flex: auto 1; */
+  `,
+
+  MainBar: styled.section`
     display: flex;
     flex-direction: row;
     /* flex: auto 1; */
@@ -19,7 +26,7 @@ const Styled = {
       content: "";
       background: ${(props) => props.theme.colors.lighterGray};
       width: 100%;
-      height: 2px;
+      height: 1px;
       position: absolute;
       top: 50%;
       left: 0;
@@ -28,7 +35,7 @@ const Styled = {
     }
   `,
   BarGroup: styled.div`
-    width: 100%;
+    width: 10px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -44,6 +51,7 @@ const Styled = {
           : "transparent"};
       width: 100%;
       height: 2px;
+
       position: absolute;
       top: 50%;
       left: 0;
@@ -53,7 +61,7 @@ const Styled = {
   `,
 
   Bar: styled.div`
-    border: 2px solid
+    border: 1px solid
       ${(props) => {
         const { status } = props;
         if (status === "played") {
@@ -72,7 +80,7 @@ const Styled = {
       return "transparent";
     }};
     width: 100%;
-    height: 50px;
+    height: 100%;
     transition: 0.3s;
 
     span {
@@ -105,25 +113,37 @@ const Styled = {
     margin-left: 2px;
   `,
 
+  GroupLabel: styled.div`
+    width: 250px;
+    position: relative;
+    &::after {
+      content: "";
+      background: ${(props) => props.theme.colors.lighterGray};
+      width: 100%;
+      height: 1px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      z-index: 1;
+      transform: translate(0, -50%);
+    }
+  `,
+
   Label: styled.div`
     height: 50px;
     display: flex;
     align-items: center;
-
-    label {
-      color: ${(props) =>
-        props.type === "primary"
-          ? props.theme.colors.primary
-          : props.theme.colors.purple};
-      font-weight: 600;
-    }
+    color: ${(props) =>
+      props.type === "primary"
+        ? props.theme.colors.purple
+        : props.theme.colors.primary};
+    font-weight: 600;
   `,
 
   TimeWrapper: styled.span`
     background-color: ${(props) => props.theme.colors.lighterGray};
     display: inline-block;
     padding: 5px 10px;
-    margin: 0.75em;
     border-radius: 5px;
 
     time {
@@ -134,22 +154,6 @@ const Styled = {
     }
   `,
 };
-
-function secondsToMinutes(timeInSeconds) {
-  const pad = (num, size) => {
-      return ("000" + num).slice(size * -1);
-    },
-    time = parseFloat(timeInSeconds).toFixed(3),
-    minutes = Math.floor(time / 60) % 60,
-    seconds = Math.floor(time - minutes * 60);
-
-  return `${pad(minutes, 2)}:${pad(seconds, 2)}`;
-}
-
-function percentage(partialValue, totalValue) {
-  const percentValue = (100 * partialValue) / totalValue;
-  return `${Math.round(percentValue)}%`;
-}
 
 const AudioLine = ({
   skip,
@@ -172,27 +176,24 @@ const AudioLine = ({
     [currentTime]
   );
 
-  console.log(userTwoTime, "DASDASD");
-
   return useMemo(
     () => (
-      <div>
+      <Styled.Wrapper>
         <div>
           <Styled.TimeWrapper>
             <time>{newTime}</time> / <time className="dim">{totalTime}</time>
           </Styled.TimeWrapper>
         </div>
-        <Styled.Wrapper>
-          <Styled.BarContainer width={200}>
-            <Styled.BarGroup>
-              <Styled.Label type="primary">
-                <label>{percentage(userOneTime, duration)} YOU</label>
-              </Styled.Label>
-              <Styled.Label>
-                <label>{percentage(userTwoTime, duration)} MICHEAL B.</label>
-              </Styled.Label>
-            </Styled.BarGroup>
-          </Styled.BarContainer>
+        <Styled.MainBar>
+          <Styled.GroupLabel>
+            <Styled.Label type="primary">
+              {percentage(userOneTime, duration)} YOU
+            </Styled.Label>
+            <Styled.Label>
+              {percentage(userTwoTime, duration)} MICHEAL B.
+            </Styled.Label>
+          </Styled.GroupLabel>
+
           <Styled.BarContainer>
             {wordTimings.map((data, key) => {
               if (key % 2 === 0) {
@@ -240,10 +241,19 @@ const AudioLine = ({
               });
             })}
           </Styled.BarContainer>
-        </Styled.Wrapper>
-      </div>
+        </Styled.MainBar>
+      </Styled.Wrapper>
     ),
-    [getStatus, skip, wordTimings, newTime, totalTime, userOneTime, userTwoTime]
+    [
+      getStatus,
+      skip,
+      wordTimings,
+      newTime,
+      totalTime,
+      userOneTime,
+      userTwoTime,
+      duration,
+    ]
   );
 };
 

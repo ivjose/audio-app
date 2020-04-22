@@ -6,7 +6,7 @@ const searchIcon = `${process.env.PUBLIC_URL}/assets/svg/icon-search.svg`;
 const Styled = {
   Wrapper: styled.div`
     width: 400px;
-    margin: 1em 2em;
+    margin: 1em;
     position: relative;
     display: inline-block;
   `,
@@ -28,7 +28,7 @@ const Styled = {
     margin: 0;
     border: 1px solid ${(props) => props.theme.colors.lightGray};
     border-radius: 3px;
-    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
   `,
 };
 

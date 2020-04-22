@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import styled from "@emotion/styled";
 
 import Button from "components/Button";
+import MenuDropdown from "components/MenuDropdown";
 
 const pauseIcon = `${process.env.PUBLIC_URL}/assets/svg/pause-circle-fill.svg`;
 const playIcon = `${process.env.PUBLIC_URL}/assets/svg/play-circle-fill.svg`;
@@ -50,32 +51,51 @@ const Styled = {
     background: url(${rewind}) no-repeat center center;
     height: 20px;
     width: 20px;
+    font-size: 9px;
+    font-style: normal;
+    text-align: center;
+    padding: 5px 6px;
     &:hover {
       background: url(${rewindHover}) no-repeat center center;
       cursor: pointer;
+      color: ${(props) => props.theme.colors.primary};
     }
   `,
 
   FastForwardIcon: styled.i`
+    background: url(${fastForward}) no-repeat center center;
     height: 20px;
     width: 20px;
-    background: url(${fastForward}) no-repeat center center;
+    font-size: 9px;
+    font-style: normal;
+    text-align: center;
+    padding: 5px 6px;
     &:hover {
       background: url(${fastForwardHover}) no-repeat center center;
       cursor: pointer;
+      color: ${(props) => props.theme.colors.primary};
     }
   `,
 };
 
-const AudioControl = ({ status, handlePlay, handlePause }) => {
+const AudioControl = ({
+  status,
+  speed,
+  currentTime,
+  skip,
+  handlePlay,
+  handlePause,
+  handleSpeed,
+}) => {
   const isPlay = status === "pause" || status === "stop";
 
   return useMemo(
     () => (
       <Styled.Wrapper>
         <Styled.MainControl>
-          <Styled.RewindIcon />
-
+          <Styled.RewindIcon onClick={() => skip(currentTime - 10)}>
+            10
+          </Styled.RewindIcon>
           <Styled.PlayButton onClick={isPlay ? handlePlay : handlePause}>
             {isPlay ? (
               <img src={playIcon} alt="play icon" />
@@ -83,7 +103,20 @@ const AudioControl = ({ status, handlePlay, handlePause }) => {
               <img src={pauseIcon} alt="pause icon" />
             )}
           </Styled.PlayButton>
-          <Styled.FastForwardIcon />
+          <Styled.FastForwardIcon onClick={() => skip(currentTime + 10)}>
+            10
+          </Styled.FastForwardIcon>
+          <MenuDropdown
+            onClick={handleSpeed}
+            text={`${speed} x`}
+            option={[
+              { value: 0.5, label: "0.5x" },
+              { value: 0.75, label: "0.75x" },
+              { value: 1, label: "1x" },
+              { value: 1.5, label: "1.5x" },
+              { value: 2, label: "2x" },
+            ]}
+          />
         </Styled.MainControl>
         <Styled.LeftContorl>
           <Button type="button">
@@ -93,7 +126,7 @@ const AudioControl = ({ status, handlePlay, handlePause }) => {
         </Styled.LeftContorl>
       </Styled.Wrapper>
     ),
-    [status, handlePlay, handlePause]
+    [handlePlay, handlePause, isPlay, currentTime, skip, speed, handleSpeed]
   );
 };
 

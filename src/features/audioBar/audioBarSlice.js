@@ -31,6 +31,9 @@ export const audioBarSlice = createSlice({
     setEnd: (state) => {
       state.ended = true;
     },
+    setSpeed: (state, action) => {
+      state.speed = action.payload;
+    },
     updateCurrentTime: (state, action) => {
       state.currentTime = action.payload;
     },
@@ -81,6 +84,7 @@ export const {
   getDuration,
   getAudioData,
   updateSearchWord,
+  setSpeed,
 } = audioBarSlice.actions;
 
 export default audioBarSlice.reducer;

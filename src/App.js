@@ -11,7 +11,7 @@ const theme = {
     white: "#ffffff",
     purple: "#8c6dea",
     dark: "#3a3a3a",
-    yellow: "#ffd729",
+    dimeWhite: "#fafbfc",
     lightBlue: "#9dd1f7",
     lighterBlue: "#f3faff",
     lightGray: "#d0d9e2",
@@ -26,12 +26,13 @@ function App() {
       <Global
         styles={css`
           html,
-          body,
-          #root {
+          body {
             height: 100%;
             font-family: "Source Sans Pro", sans-serif;
             font-size: 18px;
             color: ${theme.colors.dark};
+            margin: 0;
+            padding: 0;
           }
 
           *,
