@@ -20,6 +20,10 @@ const StyledButton = styled.button`
   &:hover {
     cursor: pointer;
   }
+
+  img {
+    margin-right: 5px;
+  }
 `;
 
 const Button = ({ children, ...props }) => {
