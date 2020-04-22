@@ -3,6 +3,12 @@ export function inBetween({ selected, min, max }) {
 }
 
 export function compareWord(wordOne, wordTwo) {
+  console.log(
+    wordOne,
+    wordTwo,
+    wordOne.includes(wordTwo),
+    "DDDDDDDDDDDDDDDDdddd"
+  );
 
   if (!wordOne || !wordTwo) {
     return false;

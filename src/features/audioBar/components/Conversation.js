@@ -16,6 +16,7 @@ const Styled = {
       return "transparent";
     }};
     margin-left: 5px;
+    display: inline-block;
     transition: 0.3s;
     &:hover {
       background-color: ${(props) => props.theme.colors.lightBlue};
